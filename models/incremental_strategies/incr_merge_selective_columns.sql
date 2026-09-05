@@ -10,7 +10,7 @@
         unique_key='order_id',
         incremental_strategy='merge',
         merge_update_columns=['total_price', 'order_status']
-        -- alternative: merge_exclude_columns=['first_loaded_at']
+       
     )
 }}
 

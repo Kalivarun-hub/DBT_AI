@@ -1,41 +1,60 @@
-
-# Name your project! Project names should contain only lowercase characters
-# and underscores. A good package name should reflect your organization's
-# name or the intended use of these models
-name: 'my_new_project'
+name: 'tpch_demo'
 version: '1.0.0'
 config-version: 2
 
-# This setting configures which "profile" dbt uses for this project.
-profile: 'DBT_AI'
+profile: 'DBTPRACTICEAI'
 
-# These configurations specify where dbt should look for different types of files.
-# The `model-paths` config, for example, states that models in this project can be
-# found in the "models/" directory. You probably won't need to change these!
 model-paths: ["models"]
-analysis-paths: ["analyses"]
-test-paths: ["tests"]
 seed-paths: ["seeds"]
-macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
 
-target-path: "target"  # directory which will store compiled SQL files
-clean-targets:         # directories to be removed by `dbt clean`
+target-path: "target"
+clean-targets:
   - "target"
   - "dbt_packages"
 
-
-# Configuring models
-# Full documentation: https://docs.getdbt.com/docs/configuring-models
-
-# In dbt, the default materialization for a model is a view. This means, when you run 
-# dbt run or dbt build, all of your models will be built as a view in your data platform. 
-# The configuration below will override this setting for models in the example folder to 
-# instead be materialized as tables. Any models you add to the root of the models folder will 
-# continue to be built as views. These settings can be overridden in the individual model files
-# using the `{{ config(...) }}` macro.
-
 models:
-  my_new_project:
-    raw:
+  tpch_demo:
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: view
+      +schema: intermediate
+    marts:
       +materialized: table
+      +schema: marts
+    incremental_strategies:
+      +schema: incremental_demo
+    truncate_and_load:
+      +schema: truncate_demo
+
+seeds:
+  tpch_demo:
+    +schema: seeds
+    +quote_columns: false
+
+# List of externally-loaded tables to truncate before an external reload step.
+# Used by macros/truncate_all_tables.sql — see setup_scripts/04_create_external_load_tables.sql
+# for what these tables are in this demo.
+vars:
+  tables_to_truncate:
+    - tpch_demo.external_load.ext_customers
+    - tpch_demo.external_load.ext_orders
+
+# Project-level hooks — run once per `dbt run`/`dbt build` invocation,
+# not per model. Good for session-wide setup/teardown (warehouse sizing,
+# temp table cleanup, run-level logging).
+on-run-start:
+  - "insert into tpch_demo.raw.audit_log (model_name, event, event_at)
+     select 'ALL_MODELS', 'dbt_run_started', current_timestamp()"
+  # Uncomment to auto-truncate the external tables before every dbt run
+  # (Option A from the guide). Left off by default so it doesn't run
+  # unintentionally — prefer the on-demand run-operation (Option B) for demos.
+  # - "{{ truncate_all_tables(var('tables_to_truncate')) }}"
+
+on-run-end:
+  - "insert into tpch_demo.raw.audit_log (model_name, event, event_at)
+     select 'ALL_MODELS', 'dbt_run_completed', current_timestamp()"

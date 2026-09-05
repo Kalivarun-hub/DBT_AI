@@ -55,4 +55,5 @@ models:
       - name: source_model
         tests:
           - accepted_values:
-              values: ['model_a', 'model_b', 'model_c']
+              arguments:
+                values: ['model_a', 'model_b', 'model_c']

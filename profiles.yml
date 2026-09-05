@@ -5,7 +5,7 @@ DBTPRACTICEAI:
       database: DBT
       password: Aakrithee@1717
       role: ACCOUNTADMIN
-      schema: PUBLIC
+      schema: RAW
       threads: 1
       type: snowflake
       user: SNOWDBT
@@ -18,7 +18,7 @@ DBT_AI:
       database: ANALYTICS
       password: Aakrithee@1717
       role: ACCOUNTADMIN
-      schema: PUBLIC
+      schema: RAW
       threads: 1
       type: snowflake
       user: SNOWDBT
