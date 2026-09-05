@@ -1,0 +1,9 @@
+version: 2
+
+models:
+  - name: incr_truncate_and_load
+    description: "Truncates the table via pre_hook, then fully reloads every run — preserves table-level grants, unlike materialized='table' which does CREATE OR REPLACE."
+    columns:
+      - name: order_id
+        tests:
+          - not_null

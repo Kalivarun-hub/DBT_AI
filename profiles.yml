@@ -1,0 +1,26 @@
+DBTPRACTICEAI:
+  outputs:
+    dev:
+      account: UYRVAMS-OF80826
+      database: DBT
+      password: Aakrithee@1717
+      role: ACCOUNTADMIN
+      schema: RAW
+      threads: 1
+      type: snowflake
+      user: SNOWDBT
+      warehouse: COMPUTE_WH
+  target: dev
+DBT_AI:
+  outputs:
+    dev:
+      account: UYRVAMS-OF80826
+      database: ANALYTICS
+      password: Aakrithee@1717
+      role: ACCOUNTADMIN
+      schema: RAW
+      threads: 1
+      type: snowflake
+      user: SNOWDBT
+      warehouse: COMPUTE_WH
+  target: dev
