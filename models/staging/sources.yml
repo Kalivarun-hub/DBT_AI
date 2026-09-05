@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  # Points at the WRITABLE copy created by setup_scripts/01_create_writable_source_tables.sql,
+  # not the read-only snowflake_sample_data share — this is what lets you INSERT/UPDATE
+  # for the live demo. Point back to snowflake_sample_data.tpch_sf1 if you only need read-only.
+  - name: tpch
+    database: tpch_demo
+    schema: raw
+    tables:
+      - name: orders
+        identifier: orders
+        columns:
+          - name: o_orderkey
+            tests:
+              - unique
+              - not_null
+      - name: customer
+        identifier: customer
+        columns:
+          - name: c_custkey
+            tests:
+              - unique
+              - not_null
+      - name: lineitem
+        identifier: lineitem
+      - name: nation
+        identifier: nation
+      - name: region
+        identifier: region

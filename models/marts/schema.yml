@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Incremental fact table, one row per order, aggregated from line items."
+    columns:
+      - name: order_id
+        description: "Primary key of the order fact."
+        tests:
+          - unique
+          - not_null
+      - name: total_net_revenue
+        tests:
+          - not_null
+
+  - name: dim_customers
+    description: "SCD Type 2 customer dimension, built on the customers_snapshot, enriched with region_mapping seed."
+    columns:
+      - name: customer_id
+        description: "Not unique alone in SCD2 — combine with is_current for the current-row key."
+      - name: is_current
+        tests:
+          - not_null
+      - name: region_group
+        description: "Manually maintained business grouping from the region_mapping seed."
+
+  - name: model_a
+    description: "Orders from BUILDING segment customers — one of three upstream models feeding combined_output."
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+
+  - name: model_b
+    description: "Orders from AUTOMOBILE segment customers — one of three upstream models feeding combined_output."
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+
+  - name: model_c
+    description: "Orders from all other segments — one of three upstream models feeding combined_output."
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+
+  - name: combined_output
+    description: "Incremental merge of model_a, model_b, and model_c into a single table. New order_ids are inserted; existing order_ids with a newer updated_at are updated."
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: source_model
+        tests:
+          - accepted_values:
+              values: ['model_a', 'model_b', 'model_c']

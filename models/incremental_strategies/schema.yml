@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: incr_append
+    description: "Demonstrates incremental_strategy='append' — inserts only, no dedup or update."
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+
+  - name: incr_merge
+    description: "Demonstrates incremental_strategy='merge' — insert new rows, update existing rows matched on unique_key."
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+
+  - name: incr_merge_selective_columns
+    description: "Demonstrates merge_update_columns — only specific columns get overwritten on a match."
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+
+  - name: incr_delete_insert
+    description: "Demonstrates incremental_strategy='delete+insert' — deletes all existing rows for a unique_key, then inserts the new batch. Handles one-to-many unique_key matches (multiple lineitem rows per order_id) that a plain merge cannot."
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+
+  - name: incr_with_hooks
+    description: "Demonstrates pre_hook and post_hook with raw SQL — audit logging before/after the model builds, plus a grant statement."
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+
+  - name: table_with_macro_hooks
+    description: "Demonstrates pre_hook/post_hook calling a reusable macro (log_model_run) instead of repeating raw SQL strings."

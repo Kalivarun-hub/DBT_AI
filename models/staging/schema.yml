@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "One row per order, cleaned and renamed from raw TPCH orders."
+    columns:
+      - name: order_id
+        description: "Primary key of the order."
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+      - name: order_status
+        tests:
+          - accepted_values:
+              values: ['O', 'F', 'P']
+
+  - name: stg_customers
+    description: "One row per customer."
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_lineitem
+    description: "One row per order line item."
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+
+  - name: stg_nation
+    description: "Nation reference data."
+    columns:
+      - name: nation_key
+        tests:
+          - unique
+          - not_null
