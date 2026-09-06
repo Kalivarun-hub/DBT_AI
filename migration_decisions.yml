@@ -1,0 +1,3 @@
+target_architecture: layered
+data_warehouse: snowflake
+packages_mode: self_contained_macros
