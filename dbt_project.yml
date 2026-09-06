@@ -30,6 +30,9 @@ models:
       +schema: incremental_demo
     truncate_and_load:
       +schema: truncate_demo
+    raw:
+      +schema: raw
+
 
 seeds:
   tpch_demo:

@@ -17,7 +17,7 @@
             "insert into tpch_demo.raw.audit_log (model_name, event, event_at)
              select '{{ this.name }}', 'run_completed', current_timestamp()",
 
-            "grant select on {{ this }} to role \"{{ target.role }}\""
+           
         ]
     )
 }}
