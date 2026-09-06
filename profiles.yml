@@ -1,8 +1,8 @@
 DBTPRACTICEAI:
   outputs:
     dev:
-      account: UYRVAMS-OF80826
-      database: DBT
+      account: QUCQGLI-UZ79301
+      database: tpch_demo
       password: Aakrithee@1717
       role: ACCOUNTADMIN
       schema: RAW
@@ -14,8 +14,8 @@ DBTPRACTICEAI:
 DBT_AI:
   outputs:
     dev:
-      account: UYRVAMS-OF80826
-      database: ANALYTICS
+      account: QUCQGLI-UZ79301
+      database: tpch_demo
       password: Aakrithee@1717
       role: ACCOUNTADMIN
       schema: RAW
