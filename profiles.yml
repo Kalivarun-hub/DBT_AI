@@ -4,11 +4,11 @@ DBTPRACTICEAI:
       account: QUCQGLI-UZ79301
       database: tpch_demo
       password: Aakrithee@1717
-      role: ACCOUNTADMIN
+      role: DBT_ROLE
       schema: RAW
       threads: 1
       type: snowflake
-      user: SNOWDBT
+      user: DBT_USER
       warehouse: COMPUTE_WH
   target: dev
 DBT_AI:
@@ -17,10 +17,10 @@ DBT_AI:
       account: QUCQGLI-UZ79301
       database: tpch_demo
       password: Aakrithee@1717
-      role: ACCOUNTADMIN
+      role: DBT_ROLE
       schema: RAW
       threads: 1
       type: snowflake
-      user: SNOWDBT
+      user: DBT_USER
       warehouse: COMPUTE_WH
   target: dev

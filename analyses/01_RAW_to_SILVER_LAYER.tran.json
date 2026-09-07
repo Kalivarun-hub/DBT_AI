@@ -1,0 +1,238 @@
+{
+    "type": "transformation",
+    "version": "1.0",
+    "pipeline": {
+        "metadata": {
+            "origin": "METL"
+        },
+        "components": {
+            "CUSTOMER": {
+                "type": "table-input",
+                "parameters": {
+                    "componentName": "CUSTOMER",
+                    "database": "SNOWFLAKE_SAMPLE_DATA",
+                    "schema": "TPCH_SF1",
+                    "targetTable": "CUSTOMER",
+                    "columnNames": [
+                        "C_CUSTKEY",
+                        "C_NAME",
+                        "C_ADDRESS",
+                        "C_NATIONKEY",
+                        "C_PHONE",
+                        "C_ACCTBAL",
+                        "C_MKTSEGMENT"
+                    ],
+                    "timeOffset": ""
+                }
+            },
+            "REGION": {
+                "type": "table-input",
+                "parameters": {
+                    "componentName": "REGION",
+                    "database": "SNOWFLAKE_SAMPLE_DATA",
+                    "schema": "TPCH_SF1",
+                    "targetTable": "REGION",
+                    "columnNames": [
+                        "R_REGIONKEY",
+                        "R_NAME"
+                    ],
+                    "timeOffset": ""
+                }
+            },
+            "NATION": {
+                "type": "table-input",
+                "parameters": {
+                    "componentName": "NATION",
+                    "database": "SNOWFLAKE_SAMPLE_DATA",
+                    "schema": "TPCH_SF1",
+                    "targetTable": "NATION",
+                    "columnNames": [
+                        "N_NATIONKEY",
+                        "N_NAME",
+                        "N_REGIONKEY"
+                    ],
+                    "timeOffset": ""
+                }
+            },
+            "Join 0": {
+                "type": "join",
+                "sources": [
+                    "CUSTOMER",
+                    "NATION",
+                    "REGION"
+                ],
+                "parameters": {
+                    "componentName": "Join 0",
+                    "mainTable": "CUSTOMER",
+                    "mainTableAlias": "C",
+                    "joins": [
+                        [
+                            "NATION",
+                            "N",
+                            "Inner"
+                        ],
+                        [
+                            "REGION",
+                            "R",
+                            "Inner"
+                        ]
+                    ],
+                    "joinExpressions": [
+                        [
+                            "\"C\".\"C_NATIONKEY\"=\"N\".\"N_NATIONKEY\"",
+                            "C_Inner_N"
+                        ],
+                        [
+                            "\"N\".\"N_REGIONKEY\"=\"R\".\"R_REGIONKEY\"\n",
+                            "C_Inner_R"
+                        ]
+                    ],
+                    "columnMappings": [
+                        [
+                            "C.C_CUSTKEY",
+                            "C_CUSTKEY"
+                        ],
+                        [
+                            "C.C_NAME",
+                            "C_NAME"
+                        ],
+                        [
+                            "C.C_ADDRESS",
+                            "C_ADDRESS"
+                        ],
+                        [
+                            "C.C_PHONE",
+                            "C_PHONE"
+                        ],
+                        [
+                            "C.C_ACCTBAL",
+                            "C_ACCTBAL"
+                        ],
+                        [
+                            "C.C_MKTSEGMENT",
+                            "C_MKTSEGMENT"
+                        ],
+                        [
+                            "N.N_NATIONKEY",
+                            "N_NATIONKEY"
+                        ],
+                        [
+                            "N.N_NAME",
+                            "N_NAME"
+                        ],
+                        [
+                            "R.R_REGIONKEY",
+                            "R_REGIONKEY"
+                        ],
+                        [
+                            "R.R_NAME",
+                            "REGION"
+                        ]
+                    ]
+                }
+            },
+            "Filter 0": {
+                "type": "filter",
+                "sources": [
+                    "Join 0"
+                ],
+                "parameters": {
+                    "componentName": "Filter 0",
+                    "mode": "Basic",
+                    "filterConditions": [
+                        [
+                            "REGION",
+                            "Is",
+                            "Equal to",
+                            "ASIA"
+                        ]
+                    ],
+                    "combineCondition": "AND"
+                }
+            },
+            "Calculator 0": {
+                "type": "calculator",
+                "sources": [
+                    "Filter 0"
+                ],
+                "parameters": {
+                    "componentName": "Calculator 0",
+                    "includeInputColumns": "Yes",
+                    "calculations": [
+                        [
+                            "CONVERT_TIMEZONE('America/Los_Angeles','Asia/Kolkata',CURRENT_TIMESTAMP)",
+                            "AUDIT_RUNTIME_IST"
+                        ]
+                    ]
+                }
+            },
+            "Create View 0": {
+                "type": "create-view",
+                "sources": [
+                    "Calculator 0"
+                ],
+                "parameters": {
+                    "componentName": "Create View 0",
+                    "database": "[Environment Default]",
+                    "schema": "[Environment Default]",
+                    "viewName": "VW_ASIA_CUSTOMER",
+                    "secureView": "No",
+                    "viewType": "Standard"
+                }
+            }
+        }
+    },
+    "design": {
+        "components": {
+            "CUSTOMER": {
+                "position": {
+                    "x": 224,
+                    "y": -176
+                },
+                "tempMetlId": 10282
+            },
+            "REGION": {
+                "position": {
+                    "x": 224,
+                    "y": -16
+                },
+                "tempMetlId": 10360
+            },
+            "NATION": {
+                "position": {
+                    "x": 224,
+                    "y": -96
+                },
+                "tempMetlId": 10367
+            },
+            "Join 0": {
+                "position": {
+                    "x": 393,
+                    "y": -96
+                },
+                "tempMetlId": 10450
+            },
+            "Filter 0": {
+                "position": {
+                    "x": 528,
+                    "y": -96
+                },
+                "tempMetlId": 10565
+            },
+            "Calculator 0": {
+                "position": {
+                    "x": 661,
+                    "y": -101
+                },
+                "tempMetlId": 10591
+            },
+            "Create View 0": {
+                "position": {
+                    "x": 780,
+                    "y": -100
+                },
+                "tempMetlId": 10657
+            }
+        }
+    }
+}

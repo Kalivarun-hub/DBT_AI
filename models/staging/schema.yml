@@ -44,3 +44,42 @@ models:
         tests:
           - unique
           - not_null
+
+
+
+  - name: stg_asia_customers
+    description: "One row per customer in the Asia region, reproducing Matillion's VW_ASIA_CUSTOMER view."
+    columns:
+      - name: customer_id
+        description: "Primary key of the Asia-region customer."
+        tests:
+          - unique
+          - not_null
+      - name: customer_name
+        description: "Customer name from TPCH."
+      - name: address
+        description: "Customer address from TPCH."
+      - name: customer_phone
+        description: "Customer telephone number from TPCH."
+      - name: account_balance
+        description: "Customer account balance from TPCH."
+      - name: market_segment
+        description: "Customer market segment from TPCH."
+      - name: nation_key
+        description: "Key of the customer's nation."
+        tests:
+          - not_null
+      - name: nation_name
+        description: "Name of the customer's nation."
+      - name: region_key
+        description: "Key of the customer's region."
+        tests:
+          - not_null
+      - name: region
+        description: "Region name; this model is limited to ASIA."
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['ASIA']
+      - name: audit_runtime_ist
+        description: "Model query timestamp converted from America/Los_Angeles to Asia/Kolkata."
