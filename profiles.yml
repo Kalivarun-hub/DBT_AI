@@ -3,7 +3,7 @@ DBTPRACTICEAI:
     dev:
       account: QUCQGLI-UZ79301
       database: tpch_demo
-      password: Aakrithee@1717
+      private_key_path: C:/Users/lenovo/.ssh/rsa_key.p8
       role: DBT_ROLE
       schema: RAW
       threads: 1
@@ -16,7 +16,7 @@ DBT_AI:
     dev:
       account: QUCQGLI-UZ79301
       database: tpch_demo
-      password: Aakrithee@1717
+      private_key_path: C:/Users/lenovo/.ssh/rsa_key.p8
       role: DBT_ROLE
       schema: RAW
       threads: 1
